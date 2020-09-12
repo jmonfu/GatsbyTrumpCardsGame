@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `Gatsby Trump Cards Game`,
+    description: `A simple card game where the player battle it out to win all the cards inside the deck.`,
+    author: `@johannmontfort`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

@@ -1,0 +1,43 @@
+body {
+    background: radial-gradient(#e5e5e5, #fff, #e5e5e5);
+}
+
+.container-fluid.row {
+    padding-top: 6rem;
+}
+
+.top-buffer { 
+    margin-top:2rem; 
+}
+
+.card {
+    width: 20rem;
+}
+
+.card:hover {
+    box-shadow: 5px 10px 20px 1px rgba(0, 0, 0, 0.253)!important ;
+}
+
+.card-rating-text {
+    font-size: 0.8rem;
+}
+
+.card-rating-color {
+    color: red;
+    font-weight: bold;
+}
+
+.overflow {
+    overflow: hidden;
+}
+
+.card-image {
+    height: 15rem;
+    width: 100%;
+    transform: scale(1);
+    transition: transform 0.5s ease;
+}
+
+.card-image:hover {
+    transform: scale(1.2);
+}
