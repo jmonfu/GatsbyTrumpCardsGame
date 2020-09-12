@@ -7,6 +7,10 @@ const Card = ({ cardInfo }) => {
       : rows[rows.length-1].push(key)) && rows;
   }, []);
 
+  function handleClick(player, title, rating) {
+    console.log(player, title, " ", rating);    
+  };
+
   return (
     <div className="card text-center shadow">
       <h4 className="card-title">{cardInfo.title}</h4>
@@ -19,9 +23,9 @@ const Card = ({ cardInfo }) => {
             evenRatingRows.map(row => ( 
             <div className="row" key={row[0].title}>
               <div className="col-md-4 text-left">{row[0].title}</div>
-              <div className="col-md-2 text-left card-rating-color">{row[0].rating}</div>
+              <div className="col-md-2 text-left card-rating-color" onClick={() => handleClick(cardInfo.player, row[0].title, row[0].rating)} >{row[0].rating}</div>
               <div className="col-md-4 text-left">{row[1].title}</div>
-              <div className="col-md-2 text-left card-rating-color">{row[1].rating}</div>
+              <div className="col-md-2 text-left card-rating-color" onClick={() => handleClick(cardInfo.player, row[1].title, row[1].rating)}>{row[1].rating}</div>
             </div>
             ))
           }          

@@ -10,6 +10,7 @@ import attacker from '../../assets/attacker.png';
 const CardsBoard = () => {
 
 const cardInfo1 = {
+  player: 1,
   image: goalie, 
   title: "Goalkeeper", 
   ratings: [
@@ -25,6 +26,7 @@ const cardInfo1 = {
 }
 
 const cardInfo2 = {
+  player: 2,
   image: defender, 
   title: "Defender",
   ratings: [
