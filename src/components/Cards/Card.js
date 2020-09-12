@@ -1,38 +1,30 @@
-import React from "react";
+import React from "react"
 
-const Card = props => {
+const Card = ({ cardInfo }) => {
+
+  const evenRatingRows = cardInfo.ratings.reduce(function (rows, key, index) { 
+    return (index % 2 === 0 ? rows.push([key]) 
+      : rows[rows.length-1].push(key)) && rows;
+  }, []);
+
   return (
     <div className="card text-center shadow">
-      <h4 className="card-title">{props.title}</h4>
+      <h4 className="card-title">{cardInfo.title}</h4>
       <div className="overflow">
-        <img src={props.imgsrc} alt="joker" className="card-image"/>
+        <img src={cardInfo.image} alt="joker" className="card-image" />
       </div>
       <div className="card-body text-dark">
         <div className="container-fluid justify-content-center card-rating-text">
-        <div className="row">
-          <div className="col-md-4 text-left">Handling</div>
-          <div className="col-md-2 text-left card-rating-color">99</div>
-          <div className="col-md-4 text-left">Reflexes</div>
-          <div className="col-md-2 text-left card-rating-color">99</div>
-        </div>
-        <div className="row">
-          <div className="col-md-4 text-left">Defending</div>
-          <div className="col-md-2 text-left card-rating-color">99</div>
-          <div className="col-md-4 text-left">Strength</div>
-          <div className="col-md-2 text-left card-rating-color">99</div>
-        </div>
-        <div className="row">
-          <div className="col-md-4 text-left">Passing</div>
-          <div className="col-md-2 text-left card-rating-color">99</div>
-          <div className="col-md-4 text-left">Flair</div>
-          <div className="col-md-2 text-left card-rating-color">99</div>
-        </div>
-        <div className="row">
-          <div className="col-md-4 text-left">Finishing</div>
-          <div className="col-md-2 text-left card-rating-color">99</div>
-          <div className="col-md-4 text-left">Composure</div>
-          <div className="col-md-2 text-left card-rating-color">99</div>
-        </div>
+          {
+            evenRatingRows.map(row => ( 
+            <div className="row" key={row[0].title}>
+              <div className="col-md-4 text-left">{row[0].title}</div>
+              <div className="col-md-2 text-left card-rating-color">{row[0].rating}</div>
+              <div className="col-md-4 text-left">{row[1].title}</div>
+              <div className="col-md-2 text-left card-rating-color">{row[1].rating}</div>
+            </div>
+            ))
+          }          
         </div>
       </div>
     </div>

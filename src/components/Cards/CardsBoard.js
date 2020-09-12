@@ -8,13 +8,36 @@ import midfielder from '../../assets/midfielder.png';
 import attacker from '../../assets/attacker.png';
 
 const CardsBoard = () => {
-  const cardInfo = [
-    { image: "", title: "", text: "" },
-    { image: "", title: "", text: "" },
-    { image: "", title: "", text: "" },
-    { image: "", title: "", text: "" },
-    { image: "", title: "", text: "" },
+
+const cardInfo1 = {
+  image: goalie, 
+  title: "Goalkeeper", 
+  ratings: [
+    {title: "Handling", rating: "99"},
+    {title: "Reflexes", rating: "99"},
+    {title: "Defending", rating: "99"},
+    {title: "Strength", rating: "99"},
+    {title: "Passing", rating: "99"},
+    {title: "Flair", rating: "99"},
+    {title: "Finishing", rating: "99"},
+    {title: "Composure", rating: "99"},
   ]
+}
+
+const cardInfo2 = {
+  image: defender, 
+  title: "Defender",
+  ratings: [
+    {title: "Handling", rating: "80"},
+    {title: "Reflexes", rating: "80"},
+    {title: "Defending", rating: "80"},
+    {title: "Strength", rating: "80"},
+    {title: "Passing", rating: "80"},
+    {title: "Flair", rating: "80"},
+    {title: "Finishing", rating: "80"},
+    {title: "Composure", rating: "80"},
+  ]
+}
 
   return (
     <div className="container-fluid justify-content-center">
@@ -23,16 +46,16 @@ const CardsBoard = () => {
           <div>
             <h4>Player 1</h4>
           </div>
-          <Card imgsrc={attacker} title="Attacker" />
+          <Card cardInfo={cardInfo1} />
         </div>
         <div className="col-md-6">
           <h4>Player 2</h4>
-          <Card imgsrc={midfielder} title="Midfielder" />
+          <Card cardInfo={cardInfo2}/>
         </div>
       </div>
       <div className="row top-buffer">
         <div className="col-md-12 text-center">
-          <button id="startGameBtn" name="StartGameButton" class="btn btn-secondary">START GAME</button> 
+          <button id="startGameBtn" name="StartGameButton" className="btn btn-secondary">START GAME</button> 
         </div>
       </div>
     </div>
