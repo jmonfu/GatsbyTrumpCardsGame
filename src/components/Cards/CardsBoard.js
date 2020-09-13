@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import Card from './Card';
 
 import joker from '../../assets/joker.png';
@@ -8,6 +8,9 @@ import midfielder from '../../assets/midfielder.png';
 import attacker from '../../assets/attacker.png';
 
 const CardsBoard = () => {
+
+const [ ratingObj, setRatingObj ] = useState({});
+console.log(ratingObj);
 
 const cardInfo1 = {
   player: 1,
@@ -48,11 +51,11 @@ const cardInfo2 = {
           <div>
             <h4>Player 1</h4>
           </div>
-          <Card cardInfo={cardInfo1} />
+          <Card cardInfo={cardInfo1} onClick={ratingObj => setRatingObj(ratingObj)} />
         </div>
         <div className="col-md-6">
           <h4>Player 2</h4>
-          <Card cardInfo={cardInfo2}/>
+          <Card cardInfo={cardInfo2} onClick={ratingObj => setRatingObj(ratingObj)}/>
         </div>
       </div>
       <div className="row top-buffer">
