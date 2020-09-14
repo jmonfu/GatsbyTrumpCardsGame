@@ -93,14 +93,7 @@ const CardsBoard = () => {
     //generate the card’s values
     generateDeck();
     if (deck.length > 0) {
-      //randomize the deck
-      shuffleDeck();
-      //distribute 26 cards at random when the game start
       distributeCards();
-      //queue the first card to Player 1
-      setCurrCardPl1(deck1[0]);      
-      //queue the first card to Player 2
-      setCurrCardPl2(deck2[0]);      
 
       if (currCardPl1 != undefined){
         console.log(currCardPl1);
@@ -112,22 +105,25 @@ const CardsBoard = () => {
   };
 
   const distributeCards = () => {
-    const splitDeck1 = deck.slice(0, 26);
-    const splitDeck2 = deck.slice(26, 52);
+      //randomize the deck
+      setDeck(deck=>[...deck].sort(() => Math.random() - 0.5));
 
-    //add this card to the deck
-    splitDeck1.map((card) => {
-      setDeck1(deck1 => [...deck1, card]);
-    });
-
-    //add this card to the deck
-    splitDeck2.map((card) => {
-      setDeck2(deck2 => [...deck2, card]);
-    });
-  };
-
-  const shuffleDeck = () => {
-    deck.sort(() => Math.random() - 0.5);
+      //distribute 26 cards at random when the game start
+      const splitDeck1 = deck.slice(0, 26);
+      const splitDeck2 = deck.slice(26, 52);
+      //add this card to the deck
+      splitDeck1.map((card) => {
+        setDeck1(deck1 => [...deck1, card]);
+      });
+      //add this card to the deck
+      splitDeck2.map((card) => {
+        setDeck2(deck2 => [...deck2, card]);
+      });
+      
+      //queue the first card to Player 1
+      setCurrCardPl1(deck1[0]);      
+      //queue the first card to Player 2
+      setCurrCardPl2(deck2[0]);      
   };
 
   const generateDeck = () => {
