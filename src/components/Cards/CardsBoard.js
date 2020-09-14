@@ -8,147 +8,105 @@ import midfielder from "../../assets/midfielder.png"
 import attacker from "../../assets/attacker.png"
 
 const CardsBoard = () => {
-
-  const deckLimits = {
-    joker: 4, goalkeepers: 12, defenders: 12, midfielders: 12, attackers: 12
-  };
-
-  const [ratingObj, setRatingObj] = useState({});
-  const [visible1, setVisible1 ] = useState(false);
-  const [visible2, setVisible2 ] = useState(false);
-  const [deck, setDeck] = useState([]);
-  const [deck1, setDeck1] = useState([]);
-  const [deck2, setDeck2] = useState([]);
-  const [currCardPl1, setCurrCardPl1] = useState({});
-  const [currCardPl2, setCurrCardPl2] = useState({});
-
-  useEffect(() => {
-    generateDeck();
-    distributeCards();
-  }, []);
+  const [ratingObj, setRatingObj] = useState({})
+  const [visible1, setVisible1] = useState(false)
+  const [visible2, setVisible2] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [player1Card, setPlayer1Card] = useState({})
+  const [player2Card, setPlayer2Card] = useState({})
 
   useEffect(() => {
     doRatingClickProcessing()
-  }, [ratingObj]);
+  }, [ratingObj])
 
-  const cardInfo1 = {
-    player: 1,
-    image: goalie,
-    title: "Goalkeeper",
-    ratings: [
-      { title: "Handling", rating: "99" },
-      { title: "Reflexes", rating: "99" },
-      { title: "Defending", rating: "99" },
-      { title: "Strength", rating: "99" },
-      { title: "Passing", rating: "99" },
-      { title: "Flair", rating: "99" },
-      { title: "Finishing", rating: "99" },
-      { title: "Composure", rating: "99" },
-    ],
-  }
+  const deck = []
+  let currCardPl1 = {}
+  let currCardPl2 = {}
 
-  const cardInfo2 = {
-    player: 2,
-    image: defender,
-    title: "Defender",
-    ratings: [
-      { title: "Handling", rating: "80" },
-      { title: "Reflexes", rating: "80" },
-      { title: "Defending", rating: "80" },
-      { title: "Strength", rating: "80" },
-      { title: "Passing", rating: "80" },
-      { title: "Flair", rating: "80" },
-      { title: "Finishing", rating: "80" },
-      { title: "Composure", rating: "80" },
-    ],
+  const deckLimits = {
+    joker: 4,
+    goalkeepers: 12,
+    defenders: 12,
+    midfielders: 12,
+    attackers: 12,
   }
 
   const doRatingClickProcessing = () => {
-    const {player, title, rating} = ratingObj;
+    const { player, title, rating } = ratingObj
 
-    if (player === 1){
+    if (player === 1) {
       // reveal opp card
-      setVisible2(true);
+      setVisible2(true)
       // get the same value id
-      let searchRatingByTitle = cardInfo2.ratings.filter(v => v.title.includes(title));
+      let searchRatingByTitle = currCardPl2.ratings.filter(v =>
+        v.title.includes(title)
+      )
       if (searchRatingByTitle[0].rating <= rating) {
-        console.log('player1 wins');
+        console.log("player1 wins")
       } else {
-        console.log('player2 wins');
+        console.log("player2 wins")
       }
 
       // if value is +ve then holding player wins (gets opponent card)
       // if value is -ve opponent wins (looses card to opponent)
       // if draw opp wins (looses card to opponent)
       // Add or subtract the card counter for both players
-    };
+    }
   }
 
   const startGame = () => {
-    //reset decks
-    setDeck([]);
-    setDeck1([]);
-    setDeck2([]);
-
     //generate the card’s values
-    generateDeck();
-    if (deck.length > 0) {
-      distributeCards();
-
-      if (currCardPl1 != undefined){
-        console.log(currCardPl1);
-        //unMask ratings of Player 1
-        setVisible1(true);
-        setVisible2(false);
-      }
-    }
-  };
+    generateDeck()
+    distributeCards()
+  }
 
   const distributeCards = () => {
-      //randomize the deck
-      setDeck(deck=>[...deck].sort(() => Math.random() - 0.5));
+    //randomize the deck
+    deck.sort(() => Math.random() - 0.5)
+    //distribute 26 cards at random when the game start
+    const deck1 = deck.slice(0, 26)
+    const deck2 = deck.slice(26, 52)
 
-      //distribute 26 cards at random when the game start
-      const splitDeck1 = deck.slice(0, 26);
-      const splitDeck2 = deck.slice(26, 52);
-      //add this card to the deck
-      splitDeck1.map((card) => {
-        setDeck1(deck1 => [...deck1, card]);
-      });
-      //add this card to the deck
-      splitDeck2.map((card) => {
-        setDeck2(deck2 => [...deck2, card]);
-      });
-      
-      //queue the first card to Player 1
-      setCurrCardPl1(deck1[0]);      
-      //queue the first card to Player 2
-      setCurrCardPl2(deck2[0]);      
-  };
+    //queue the first card to Player 1
+    currCardPl1 = deck1[0]
+    currCardPl1.player = 1
+    //queue the first card to Player 2
+    currCardPl2 = deck2[0]
+    currCardPl2.player = 2
+
+    setPlayer1Card(currCardPl1)
+    setPlayer2Card(currCardPl2)
+
+    if (player1Card.title !== "" && player2Card.title !== "") {
+      setLoading(false)
+      //unMask ratings of Player 1
+      setVisible1(true);
+      setVisible2(false);
+    }
+  }
 
   const generateDeck = () => {
     for (let i = 0; i < deckLimits.joker; i++) {
-      generateCard('joker');
-    };
+      generateCard("joker")
+    }
     for (let i = 0; i < deckLimits.goalkeepers; i++) {
-      generateCard('goalkeeper');
-    };
+      generateCard("goalkeeper")
+    }
     for (let i = 0; i < deckLimits.defenders; i++) {
-      generateCard('defender');
-    };
+      generateCard("defender")
+    }
     for (let i = 0; i < deckLimits.midfielders; i++) {
-      generateCard('midfielder');
-    };
+      generateCard("midfielder")
+    }
     for (let i = 0; i < deckLimits.attackers; i++) {
-      generateCard('attacker');
-    };
+      generateCard("attacker")
+    }
   }
 
   const generateCard = item => {
     const card = {
-      player: 0,
+      title: item[0].toUpperCase() + item.substring(1),
       image: getImage(item),
-      title: item.toUpperCase(),
       ratings: [
         { title: "Handling", rating: "99" },
         { title: "Reflexes", rating: "99" },
@@ -162,48 +120,55 @@ const CardsBoard = () => {
     }
 
     //add this card to the deck
-    setDeck(deck => [...deck, card]);
+    deck.push(card)
   }
 
   const getImage = item => {
     switch (item) {
       case "joker":
-          return joker;
+        return joker
       case "goalkeeper":
-          return goalie;
+        return goalie
       case "defender":
-          return defender;
+        return defender
       case "midfielder":
-          return midfielder;
+        return midfielder
       case "attacker":
-          return attacker;
+        return attacker
       default:
-        break;
+        break
     }
-  };
+  }
 
   return (
     <div className="container-fluid justify-content-center">
-      <div className="row">
-        <div className="col-md-6">
-          <div>
-            <h4>Player 1</h4>
+      {loading ? (
+        <div className="row">
+          <div className="col-md-12"></div>
+        </div>
+      ) : (
+        <div className="row">
+          <div className="col-md-6">
+            <div>
+              <h4>Player 1</h4>
+            </div>
+            <Card
+              cardInfo={player1Card}
+              showRatings={visible1}
+              onClick={ratingObj => setRatingObj(ratingObj)}
+            />
           </div>
-          <Card
-            cardInfo={cardInfo1}
-            showRatings={visible1}
-            onClick={ratingObj => setRatingObj(ratingObj)}
-          />
+          <div className="col-md-6">
+            <h4>Player 2</h4>
+            <Card
+              cardInfo={player2Card}
+              showRatings={visible2}
+              onClick={ratingObj => setRatingObj(ratingObj)}
+            />
+          </div>
         </div>
-        <div className="col-md-6">
-          <h4>Player 2</h4>
-          <Card
-            cardInfo={cardInfo2}
-            showRatings={visible2}
-            onClick={ratingObj => setRatingObj(ratingObj)}
-          />
-        </div>
-      </div>
+      )}
+
       <div className="row top-buffer">
         <div className="col-md-12 text-center">
           <button
