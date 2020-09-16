@@ -14,12 +14,19 @@ const CardsBoard = () => {
   const [loading, setLoading] = useState(true)
   const [player1Card, setPlayer1Card] = useState({})
   const [player2Card, setPlayer2Card] = useState({})
+  const [player1Deck, setPlayer1Deck] = useState([])
+  const [player2Deck, setPlayer2Deck] = useState([])
+  const [message, setMessage] = useState("")
+  const [winnerPl1, setWinnerPlayer1] = useState(false)
+  const [disableNextTurn, setDisableNextTurn] = useState(false)
 
   useEffect(() => {
     doRatingClickProcessing()
   }, [ratingObj])
 
   const deck = []
+  let deck1 = []
+  let deck2 = []
   let currCardPl1 = {}
   let currCardPl2 = {}
 
@@ -42,15 +49,28 @@ const CardsBoard = () => {
         v.title.includes(title)
       )
       if (searchRatingByTitle[0].rating <= rating) {
-        console.log("player1 wins")
+        //player 1 wins!
+        setMessage("Player 1 Wins!!")
+        setWinnerPlayer1(true)
+        //win the card from player 2
+        deck1 = player1Deck
+        deck2 = player2Deck
+        deck1.push(player2Card)
+        deck2.splice(0, 1)
+        setPlayer1Deck(deck1)
+        setPlayer2Deck(deck2)
       } else {
-        console.log("player2 wins")
+        //player 2 wins!
+        setMessage("Player 2 Wins!!")
+        setWinnerPlayer1(false)
+        //win the card from player 1
+        deck1 = player1Deck
+        deck2 = player2Deck
+        deck2.push(player1Card)
+        deck1.splice(0, 1)
+        setPlayer1Deck(deck1)
+        setPlayer2Deck(deck2)
       }
-
-      // if value is +ve then holding player wins (gets opponent card)
-      // if value is -ve opponent wins (looses card to opponent)
-      // if draw opp wins (looses card to opponent)
-      // Add or subtract the card counter for both players
     }
   }
 
@@ -64,8 +84,8 @@ const CardsBoard = () => {
     //randomize the deck
     deck.sort(() => Math.random() - 0.5)
     //distribute 26 cards at random when the game start
-    const deck1 = deck.slice(0, 26)
-    const deck2 = deck.slice(26, 52)
+    deck1 = deck.slice(0, 26)
+    deck2 = deck.slice(26, 52)
 
     //queue the first card to Player 1
     currCardPl1 = deck1[0]
@@ -76,12 +96,14 @@ const CardsBoard = () => {
 
     setPlayer1Card(currCardPl1)
     setPlayer2Card(currCardPl2)
+    setPlayer1Deck(deck1)
+    setPlayer2Deck(deck2)
 
     if (player1Card.title !== "" && player2Card.title !== "") {
       setLoading(false)
       //unMask ratings of Player 1
-      setVisible1(true);
-      setVisible2(false);
+      setVisible1(true)
+      setVisible2(false)
     }
   }
 
@@ -115,58 +137,58 @@ const CardsBoard = () => {
   }
 
   const generateRatings = position => {
-    const rating = [];
+    const rating = []
 
     switch (position) {
       case "joker":
-        rating.push({title: "Handling", rating: getRandomRating(90,99)});
-        rating.push({title: "Reflexes", rating: getRandomRating(90,99)});
-        rating.push({title: "Defending", rating: getRandomRating(90,99)});
-        rating.push({title: "Strength", rating: getRandomRating(90,99)});
-        rating.push({title: "Passing", rating: getRandomRating(90,99)});
-        rating.push({title: "Flair", rating: getRandomRating(90,99)});
-        rating.push({title: "Finishing", rating: getRandomRating(90,99)});
-        rating.push({title: "Composure", rating: getRandomRating(90,99)});
+        rating.push({ title: "Handling", rating: getRandomRating(90, 99) })
+        rating.push({ title: "Reflexes", rating: getRandomRating(90, 99) })
+        rating.push({ title: "Defending", rating: getRandomRating(90, 99) })
+        rating.push({ title: "Strength", rating: getRandomRating(90, 99) })
+        rating.push({ title: "Passing", rating: getRandomRating(90, 99) })
+        rating.push({ title: "Flair", rating: getRandomRating(90, 99) })
+        rating.push({ title: "Finishing", rating: getRandomRating(90, 99) })
+        rating.push({ title: "Composure", rating: getRandomRating(90, 99) })
         return rating
       case "goalkeeper":
-        rating.push({title: "Handling", rating: getRandomRating(80,99)});
-        rating.push({title: "Reflexes", rating: getRandomRating(80,99)});
-        rating.push({title: "Defending", rating: getRandomRating(20,40)});
-        rating.push({title: "Strength", rating: getRandomRating(40,80)});
-        rating.push({title: "Passing", rating: getRandomRating(20,50)});
-        rating.push({title: "Flair", rating: getRandomRating(1,20)});
-        rating.push({title: "Finishing", rating: getRandomRating(1,20)});
-        rating.push({title: "Composure", rating: getRandomRating(50,99)});
+        rating.push({ title: "Handling", rating: getRandomRating(80, 99) })
+        rating.push({ title: "Reflexes", rating: getRandomRating(80, 99) })
+        rating.push({ title: "Defending", rating: getRandomRating(20, 40) })
+        rating.push({ title: "Strength", rating: getRandomRating(40, 80) })
+        rating.push({ title: "Passing", rating: getRandomRating(20, 50) })
+        rating.push({ title: "Flair", rating: getRandomRating(1, 20) })
+        rating.push({ title: "Finishing", rating: getRandomRating(1, 20) })
+        rating.push({ title: "Composure", rating: getRandomRating(50, 99) })
         return rating
       case "defender":
-        rating.push({title: "Handling", rating: getRandomRating(1,20)});
-        rating.push({title: "Reflexes", rating: getRandomRating(1,20)});
-        rating.push({title: "Defending", rating: getRandomRating(80,99)});
-        rating.push({title: "Strength", rating: getRandomRating(80,99)});
-        rating.push({title: "Passing", rating: getRandomRating(20,50)});
-        rating.push({title: "Flair", rating: getRandomRating(1,20)});
-        rating.push({title: "Finishing", rating: getRandomRating(1,20)});
-        rating.push({title: "Composure", rating: getRandomRating(50,90)});
+        rating.push({ title: "Handling", rating: getRandomRating(1, 20) })
+        rating.push({ title: "Reflexes", rating: getRandomRating(1, 20) })
+        rating.push({ title: "Defending", rating: getRandomRating(80, 99) })
+        rating.push({ title: "Strength", rating: getRandomRating(80, 99) })
+        rating.push({ title: "Passing", rating: getRandomRating(20, 50) })
+        rating.push({ title: "Flair", rating: getRandomRating(1, 20) })
+        rating.push({ title: "Finishing", rating: getRandomRating(1, 20) })
+        rating.push({ title: "Composure", rating: getRandomRating(50, 90) })
         return rating
       case "midfielder":
-        rating.push({title: "Handling", rating: getRandomRating(1,20)});
-        rating.push({title: "Reflexes", rating: getRandomRating(1,20)});
-        rating.push({title: "Defending", rating: getRandomRating(10,80)});
-        rating.push({title: "Strength", rating: getRandomRating(10,80)});
-        rating.push({title: "Passing", rating: getRandomRating(80,99)});
-        rating.push({title: "Flair", rating: getRandomRating(80,99)});
-        rating.push({title: "Finishing", rating: getRandomRating(50,90)});
-        rating.push({title: "Composure", rating: getRandomRating(50,90)});
+        rating.push({ title: "Handling", rating: getRandomRating(1, 20) })
+        rating.push({ title: "Reflexes", rating: getRandomRating(1, 20) })
+        rating.push({ title: "Defending", rating: getRandomRating(10, 80) })
+        rating.push({ title: "Strength", rating: getRandomRating(10, 80) })
+        rating.push({ title: "Passing", rating: getRandomRating(80, 99) })
+        rating.push({ title: "Flair", rating: getRandomRating(80, 99) })
+        rating.push({ title: "Finishing", rating: getRandomRating(50, 90) })
+        rating.push({ title: "Composure", rating: getRandomRating(50, 90) })
         return rating
       case "attacker":
-        rating.push({title: "Handling", rating: getRandomRating(1,20)});
-        rating.push({title: "Reflexes", rating: getRandomRating(1,20)});
-        rating.push({title: "Defending", rating: getRandomRating(1,20)});
-        rating.push({title: "Strength", rating: getRandomRating(50,90)});
-        rating.push({title: "Passing", rating: getRandomRating(50,80)});
-        rating.push({title: "Flair", rating: getRandomRating(50,80)});
-        rating.push({title: "Finishing", rating: getRandomRating(80,99)});
-        rating.push({title: "Composure", rating: getRandomRating(80,99)});
+        rating.push({ title: "Handling", rating: getRandomRating(1, 20) })
+        rating.push({ title: "Reflexes", rating: getRandomRating(1, 20) })
+        rating.push({ title: "Defending", rating: getRandomRating(1, 20) })
+        rating.push({ title: "Strength", rating: getRandomRating(50, 90) })
+        rating.push({ title: "Passing", rating: getRandomRating(50, 80) })
+        rating.push({ title: "Flair", rating: getRandomRating(50, 80) })
+        rating.push({ title: "Finishing", rating: getRandomRating(80, 99) })
+        rating.push({ title: "Composure", rating: getRandomRating(80, 99) })
         return rating
       default:
         break
@@ -174,7 +196,7 @@ const CardsBoard = () => {
   }
 
   const getRandomRating = (bottom, top) => {
-    return Math.floor( Math.random() * ( 1 + top - bottom ) ) + bottom;
+    return Math.floor(Math.random() * (1 + top - bottom)) + bottom
   }
 
   const getImage = item => {
@@ -194,8 +216,85 @@ const CardsBoard = () => {
     }
   }
 
+  const nextTurn = () => {
+    //switch off the Next Turn button
+    setDisableNextTurn(true)
+    if (winnerPl1) {
+      //move the first card (active) to the back of the pack
+      deck1 = player1Deck
+      currCardPl1 = deck1[0]
+      deck1.splice(0, 1)
+      deck1.push(currCardPl1)
+      setPlayer1Deck(deck1)
+      // set new current card for Player 1
+      setPlayer1Card(player1Deck[0])
+
+      // set new current card for Player 2
+      setPlayer2Card(player2Deck[0])
+      //set the ratings invisible
+      setVisible1(true)
+      setVisible2(false)
+    } else {
+      //move the first card (active) to the back of the pack
+      deck2 = player2Deck
+      currCardPl2 = deck2[0]
+      deck2.splice(0, 1)
+      deck2.push(currCardPl2)
+      setPlayer2Deck(deck2)
+      // set new current card for Player 2
+      setPlayer2Card(player2Deck[0])
+
+      // set new current card for Player 1
+      setPlayer1Card(player1Deck[0])
+      //set the ratings invisible
+      setVisible1(false)
+      setVisible2(true)
+    }
+  }
+
   return (
     <div className="container-fluid justify-content-center">
+      <div className="row">
+        <div className="col-md-12 text-center">{message}</div>
+      </div>
+      {message !== "" ? (
+        <div className="row">
+          <div className="col-md-6 text-center">
+            <button
+              id="nextTurnBtn"
+              name="NextTurnButton"
+              className="btn btn-secondary"
+              onClick={() => nextTurn()}
+              disabled={disableNextTurn}
+            >
+              Next Turn
+            </button>
+          </div>
+          <div className="col-md-6 text-center">
+            <button
+              id="reStartGameBtn"
+              name="ReStartGameButton"
+              className="btn btn-secondary"
+              onClick={() => startGame()}
+            >
+              ReStart Game
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="row top-buffer">
+          <div className="col-md-12 text-center">
+            <button
+              id="startGameBtn"
+              name="StartGameButton"
+              className="btn btn-secondary"
+              onClick={() => startGame()}
+            >
+              START GAME
+            </button>
+          </div>
+        </div>
+      )}
       {loading ? (
         <div className="row">
           <div className="col-md-12"></div>
@@ -204,37 +303,24 @@ const CardsBoard = () => {
         <div className="row">
           <div className="col-md-6">
             <div>
-              <h4>Player 1</h4>
+              <h4>Player 1 - {player1Deck.length}</h4>
             </div>
             <Card
               cardInfo={player1Card}
-              showRatings={visible1}
+              showCard={visible1}
               onClick={ratingObj => setRatingObj(ratingObj)}
             />
           </div>
           <div className="col-md-6">
-            <h4>Player 2</h4>
+            <h4>Player 2 - {player2Deck.length}</h4>
             <Card
               cardInfo={player2Card}
-              showRatings={visible2}
+              showCard={visible2}
               onClick={ratingObj => setRatingObj(ratingObj)}
             />
           </div>
         </div>
       )}
-
-      <div className="row top-buffer">
-        <div className="col-md-12 text-center">
-          <button
-            id="startGameBtn"
-            name="StartGameButton"
-            className="btn btn-secondary"
-            onClick={() => startGame()}
-          >
-            START GAME
-          </button>
-        </div>
-      </div>
     </div>
   )
 }

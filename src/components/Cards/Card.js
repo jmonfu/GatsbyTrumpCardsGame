@@ -1,6 +1,7 @@
 import React from "react"
+import empty from "../../assets/empty.png"
 
-const Card = ({ cardInfo, onClick, showRatings }) => {
+const Card = ({ cardInfo, onClick, showCard }) => {
 
   const evenRatingRows = cardInfo.ratings.reduce(function (rows, key, index) { 
     return (index % 2 === 0 ? rows.push([key]) 
@@ -9,9 +10,16 @@ const Card = ({ cardInfo, onClick, showRatings }) => {
 
   return (
     <div className="card text-center shadow">
-      <h4 className="card-title">{cardInfo.title}</h4>
+      <h4 className="card-title">{
+      showCard ? cardInfo.title : "???"
+      }</h4>
       <div className="overflow">
-        <img src={cardInfo.image} alt="joker" className="card-image" />
+        {
+          showCard ? 
+          <img src={cardInfo.image} alt={cardInfo.title} className="card-image" />
+          :
+          <img src={empty} alt="" className="card-image" />
+        }
       </div>
       <div className="card-body text-dark">
         <div className="container-fluid justify-content-center card-rating-text">
@@ -20,14 +28,14 @@ const Card = ({ cardInfo, onClick, showRatings }) => {
             <div className="row" key={row[0].title}>
               <div className="col-md-4 text-left">{row[0].title}</div>
               { 
-                showRatings ? 
+                showCard ? 
                 <div className="col-md-2 text-left card-rating-color" onClick={() => onClick({player: cardInfo.player, title: row[0].title, rating: row[0].rating})} >{row[0].rating}</div>
                   : 
                 <div className="col-md-2 text-left" >??</div>
               }
               <div className="col-md-4 text-left">{row[1].title}</div>
               {
-                showRatings ?
+                showCard ?
                 <div className="col-md-2 text-left card-rating-color" onClick={() => onClick({player: cardInfo.player, title: row[1].title, rating: row[1].rating})}>{row[1].rating}</div>
                   : 
                 <div className="col-md-2 text-left" >??</div>
