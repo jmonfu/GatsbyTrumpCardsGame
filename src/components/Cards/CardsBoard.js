@@ -38,7 +38,7 @@ const CardsBoard = () => {
       // reveal opp card
       setVisible2(true)
       // get the same value id
-      let searchRatingByTitle = currCardPl2.ratings.filter(v =>
+      let searchRatingByTitle = player2Card.ratings.filter(v =>
         v.title.includes(title)
       )
       if (searchRatingByTitle[0].rating <= rating) {
@@ -107,20 +107,74 @@ const CardsBoard = () => {
     const card = {
       title: item[0].toUpperCase() + item.substring(1),
       image: getImage(item),
-      ratings: [
-        { title: "Handling", rating: "99" },
-        { title: "Reflexes", rating: "99" },
-        { title: "Defending", rating: "99" },
-        { title: "Strength", rating: "99" },
-        { title: "Passing", rating: "99" },
-        { title: "Flair", rating: "99" },
-        { title: "Finishing", rating: "99" },
-        { title: "Composure", rating: "99" },
-      ],
+      ratings: generateRatings(item),
     }
 
     //add this card to the deck
     deck.push(card)
+  }
+
+  const generateRatings = position => {
+    const rating = [];
+
+    switch (position) {
+      case "joker":
+        rating.push({title: "Handling", rating: getRandomRating(90,99)});
+        rating.push({title: "Reflexes", rating: getRandomRating(90,99)});
+        rating.push({title: "Defending", rating: getRandomRating(90,99)});
+        rating.push({title: "Strength", rating: getRandomRating(90,99)});
+        rating.push({title: "Passing", rating: getRandomRating(90,99)});
+        rating.push({title: "Flair", rating: getRandomRating(90,99)});
+        rating.push({title: "Finishing", rating: getRandomRating(90,99)});
+        rating.push({title: "Composure", rating: getRandomRating(90,99)});
+        return rating
+      case "goalkeeper":
+        rating.push({title: "Handling", rating: getRandomRating(80,99)});
+        rating.push({title: "Reflexes", rating: getRandomRating(80,99)});
+        rating.push({title: "Defending", rating: getRandomRating(20,40)});
+        rating.push({title: "Strength", rating: getRandomRating(40,80)});
+        rating.push({title: "Passing", rating: getRandomRating(20,50)});
+        rating.push({title: "Flair", rating: getRandomRating(1,20)});
+        rating.push({title: "Finishing", rating: getRandomRating(1,20)});
+        rating.push({title: "Composure", rating: getRandomRating(50,99)});
+        return rating
+      case "defender":
+        rating.push({title: "Handling", rating: getRandomRating(1,20)});
+        rating.push({title: "Reflexes", rating: getRandomRating(1,20)});
+        rating.push({title: "Defending", rating: getRandomRating(80,99)});
+        rating.push({title: "Strength", rating: getRandomRating(80,99)});
+        rating.push({title: "Passing", rating: getRandomRating(20,50)});
+        rating.push({title: "Flair", rating: getRandomRating(1,20)});
+        rating.push({title: "Finishing", rating: getRandomRating(1,20)});
+        rating.push({title: "Composure", rating: getRandomRating(50,90)});
+        return rating
+      case "midfielder":
+        rating.push({title: "Handling", rating: getRandomRating(1,20)});
+        rating.push({title: "Reflexes", rating: getRandomRating(1,20)});
+        rating.push({title: "Defending", rating: getRandomRating(10,80)});
+        rating.push({title: "Strength", rating: getRandomRating(10,80)});
+        rating.push({title: "Passing", rating: getRandomRating(80,99)});
+        rating.push({title: "Flair", rating: getRandomRating(80,99)});
+        rating.push({title: "Finishing", rating: getRandomRating(50,90)});
+        rating.push({title: "Composure", rating: getRandomRating(50,90)});
+        return rating
+      case "attacker":
+        rating.push({title: "Handling", rating: getRandomRating(1,20)});
+        rating.push({title: "Reflexes", rating: getRandomRating(1,20)});
+        rating.push({title: "Defending", rating: getRandomRating(1,20)});
+        rating.push({title: "Strength", rating: getRandomRating(50,90)});
+        rating.push({title: "Passing", rating: getRandomRating(50,80)});
+        rating.push({title: "Flair", rating: getRandomRating(50,80)});
+        rating.push({title: "Finishing", rating: getRandomRating(80,99)});
+        rating.push({title: "Composure", rating: getRandomRating(80,99)});
+        return rating
+      default:
+        break
+    }
+  }
+
+  const getRandomRating = (bottom, top) => {
+    return Math.floor( Math.random() * ( 1 + top - bottom ) ) + bottom;
   }
 
   const getImage = item => {
