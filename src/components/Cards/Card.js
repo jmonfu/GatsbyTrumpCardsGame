@@ -1,8 +1,8 @@
 import React from "react"
-import empty from "../../assets/empty.png"
+import empty from "../../assets/decks/football/empty.png"
 
-const Card = ({ cardInfo, player, onClick, showCard }) => {
-  console.log(player)
+const Card = ({ cardInfo, player, onClick, showCard, clickableRatings }) => {
+  console.log(clickableRatings)
 
   const evenRatingRows = cardInfo.ratings.reduce(function (rows, key, index) {
     return (
@@ -33,7 +33,7 @@ const Card = ({ cardInfo, player, onClick, showCard }) => {
             {evenRatingRows.map(row => (
               <div className="row" key={row[0].title}>
                 <div className="col-md-4 text-left">{row[0].title}</div>
-                {showCard ? (
+                {clickableRatings ? (
                   <div
                     className="col-md-2 text-left card-rating-color"
                     onClick={() =>
@@ -47,10 +47,10 @@ const Card = ({ cardInfo, player, onClick, showCard }) => {
                     {row[0].rating}
                   </div>
                 ) : (
-                  <div className="col-md-2 text-left">??</div>
+                  <div className="col-md-2 text-left">{row[0].rating}</div>
                 )}
                 <div className="col-md-4 text-left">{row[1].title}</div>
-                {showCard ? (
+                {clickableRatings ? (
                   <div
                     className="col-md-2 text-left card-rating-color"
                     onClick={() =>
@@ -64,7 +64,7 @@ const Card = ({ cardInfo, player, onClick, showCard }) => {
                     {row[1].rating}
                   </div>
                 ) : (
-                  <div className="col-md-2 text-left">??</div>
+                  <div className="col-md-2 text-left">{row[1].rating}</div>
                 )}
               </div>
             ))}

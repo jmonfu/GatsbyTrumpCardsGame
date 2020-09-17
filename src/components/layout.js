@@ -34,10 +34,13 @@ const Layout = ({ children }) => {
         }}
       >
         <main>{children}</main>
-        <footer>
-          © Gatsby Trump Cards Game {new Date().getFullYear()}, Built with
+        <footer style={{
+          textAlign: `center`,
+          paddingTop: `1rem`
+        }}>
+          © <a href="https://johann-montfort.com" target="_blank">Johann Montfort</a>  {new Date().getFullYear()}, Built with
           {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
+          <a href="https://www.gatsbyjs.org" target="_blank">Gatsby</a>
         </footer>
       </div>
     </>
