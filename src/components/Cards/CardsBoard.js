@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react"
 import Card from "./Card"
 
-import joker from "../../assets/joker.png"
-import goalie from "../../assets/goalie.png"
+import joker from "../../assets/joker_2.png"
+import goalie from "../../assets/goalie_2.png"
 import defender from "../../assets/defender.png"
-import midfielder from "../../assets/midfielder.png"
-import attacker from "../../assets/attacker.png"
+import midfielder from "../../assets/midfielder_2.png"
+import attacker from "../../assets/attacker_2.png"
 
 const CardsBoard = () => {
   const [ratingObj, setRatingObj] = useState({})
@@ -89,10 +89,8 @@ const CardsBoard = () => {
 
     //queue the first card to Player 1
     currCardPl1 = deck1[0]
-    currCardPl1.player = 1
     //queue the first card to Player 2
     currCardPl2 = deck2[0]
-    currCardPl2.player = 2
 
     setPlayer1Card(currCardPl1)
     setPlayer2Card(currCardPl2)
@@ -307,6 +305,7 @@ const CardsBoard = () => {
             </div>
             <Card
               cardInfo={player1Card}
+              player={1}
               showCard={visible1}
               onClick={ratingObj => setRatingObj(ratingObj)}
             />
@@ -315,6 +314,7 @@ const CardsBoard = () => {
             <h4>Player 2 - {player2Deck.length}</h4>
             <Card
               cardInfo={player2Card}
+              player={2}
               showCard={visible2}
               onClick={ratingObj => setRatingObj(ratingObj)}
             />

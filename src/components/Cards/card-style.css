@@ -38,7 +38,6 @@ body {
     overflow: hidden;
 }
 
-.card-image {
-    height: 15rem;
-    width: 100%;
+.card-body {
+    height: 8rem;
 }
