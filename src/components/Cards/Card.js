@@ -2,7 +2,6 @@ import React from "react"
 import empty from "../../assets/decks/football/empty.png"
 
 const Card = ({ cardInfo, player, onClick, showCard, clickableRatings }) => {
-  console.log(clickableRatings)
 
   const evenRatingRows = cardInfo.ratings.reduce(function (rows, key, index) {
     return (
