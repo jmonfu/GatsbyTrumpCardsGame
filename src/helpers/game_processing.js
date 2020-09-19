@@ -43,6 +43,21 @@ export const processClick = (ratingObj, player1Card, player2Card, deck1, deck2) 
   return [deck1, deck2, message, winnerPlayer1]
 }
 
+export const distributeCards = deck => {
+  //randomize the deck
+  deck.sort(() => Math.random() - 0.5)
+  //distribute 26 cards at random when the game start
+  let deck1 = deck.slice(0, 26)
+  let deck2 = deck.slice(26, 52)
+
+  //queue the first card to Player 1
+  let currCardPl1 = deck1[0]
+  //queue the first card to Player 2
+  let currCardPl2 = deck2[0]
+  
+  return [deck1, deck2, currCardPl1, currCardPl2]
+}
+
 function setWinner (message, winnerPlayer1, deckToIncrease, deckToDecrease, card) {
     message = message
     winnerPlayer1 = winnerPlayer1

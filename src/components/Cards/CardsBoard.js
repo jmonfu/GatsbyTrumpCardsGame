@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
 import {deckFootball} from '../../decks/football/deck_football';
-import { processClick } from '../../helpers/game_processing';
+import { processClick, distributeCards } from '../../helpers/game_processing';
 
 const CardsBoard = () => {
   const [ratingObj, setRatingObj] = useState({})
@@ -27,6 +27,12 @@ const CardsBoard = () => {
     doRatingClickProcessing()
   }, [ratingObj])
 
+  const startGame = () => {
+    //generate the card’s values
+    distributeCardsToPlayers()
+    setClickableRatings(true)
+  }
+
   const doRatingClickProcessing = () => {
     const { player, title, rating } = ratingObj
     if (player) {
@@ -48,24 +54,8 @@ const CardsBoard = () => {
     }
   }
 
-  const startGame = () => {
-    //generate the card’s values
-    distributeCards()
-    setClickableRatings(true)
-  }
-
-  const distributeCards = () => {
-    //randomize the deck
-    deck.sort(() => Math.random() - 0.5)
-    //distribute 26 cards at random when the game start
-    deck1 = deck.slice(0, 26)
-    deck2 = deck.slice(26, 52)
-
-    //queue the first card to Player 1
-    currCardPl1 = deck1[0]
-    //queue the first card to Player 2
-    currCardPl2 = deck2[0]
-
+  const distributeCardsToPlayers = () => {
+    const [deck1, deck2, currCardPl1, currCardPl2] =  distributeCards(deck);
     setPlayer1Card(currCardPl1)
     setPlayer2Card(currCardPl2)
     setPlayer1Deck(deck1)
