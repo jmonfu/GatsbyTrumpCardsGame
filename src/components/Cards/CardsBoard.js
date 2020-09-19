@@ -69,6 +69,15 @@ const CardsBoard = () => {
     }
   }
 
+  const setDeckAndCurrCard = (playerDeck) => {
+    //move the first card (active) to the back of the pack
+    let currCard = playerDeck[0]
+    playerDeck.splice(0, 1) 
+    playerDeck.push(currCard)
+    let newCurrCard = playerDeck[0]
+    return [playerDeck, newCurrCard]
+  }
+
   const nextTurn = () => {
     //switch off the Next Turn button
     setDisableNextTurn(true)
@@ -76,36 +85,28 @@ const CardsBoard = () => {
 
     if (winnerPl1) {
       //move the first card (active) to the back of the pack
-      deck1 = player1Deck
-      currCardPl1 = deck1[0]
-      deck1.splice(0, 1)
-      deck1.push(currCardPl1)
-      setPlayer1Deck(deck1)
+      const [playerDeck, newCurrCard] = setDeckAndCurrCard(player1Deck);
+      setPlayer1Deck(playerDeck)
       // set new current card for Player 1
-      setPlayer1Card(player1Deck[0])
+      setPlayer1Card(newCurrCard)
 
       // set new current card for Player 2
       setPlayer2Card(player2Deck[0])
       //set the ratings invisible
-      // setVisiblePl1(true)
-      // setVisiblePl2(false)
     } else {
       //move the first card (active) to the back of the pack
-      deck2 = player2Deck
-      currCardPl2 = deck2[0]
-      deck2.splice(0, 1)
-      deck2.push(currCardPl2)
-      setPlayer2Deck(deck2)
+      const [playerDeck, newCurrCard] = setDeckAndCurrCard(player2Deck);
+      setPlayer2Deck(playerDeck)
       // set new current card for Player 2
-      setPlayer2Card(player2Deck[0])
+      setPlayer2Card(newCurrCard)
 
       // set new current card for Player 1
       setPlayer1Card(player1Deck[0])
       //set the ratings invisible
-      // setVisiblePl1(false)
-      // setVisiblePl2(true)
     }
-  }
+    setVisiblePl1(winnerPl1)
+    setVisiblePl2(!winnerPl1)
+}
 
   return (
     <div className="container-fluid justify-content-center">
