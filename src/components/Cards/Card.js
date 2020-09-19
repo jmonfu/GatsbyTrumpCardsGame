@@ -30,11 +30,11 @@ const Card = ({ cardInfo, player, onClick, showCard, clickableRatings }) => {
         <div className="card-body text-dark">
           <div className="container-fluid justify-content-center card-rating-text">
             {evenRatingRows.map(row => (
-              <div className="row" key={row[0].title}>
+              <div className="row card-body-row-style" key={row[0].title}>
                 <div className="col-md-4 text-left">{row[0].title}</div>
                 {clickableRatings ? (
                   <div
-                    className="col-md-2 text-left card-rating-color"
+                    className="col-md-2 text-center card-rating-focused"
                     onClick={() =>
                       onClick({
                         player: player,
@@ -46,12 +46,12 @@ const Card = ({ cardInfo, player, onClick, showCard, clickableRatings }) => {
                     {row[0].rating}
                   </div>
                 ) : (
-                  <div className="col-md-2 text-left">{row[0].rating}</div>
+                  <div className="col-md-2 text-center card-rating-normal">{row[0].rating}</div>
                 )}
                 <div className="col-md-4 text-left">{row[1].title}</div>
                 {clickableRatings ? (
                   <div
-                    className="col-md-2 text-left card-rating-color"
+                    className="col-md-2 text-center card-rating-focused"
                     onClick={() =>
                       onClick({
                         player: player,
@@ -63,7 +63,7 @@ const Card = ({ cardInfo, player, onClick, showCard, clickableRatings }) => {
                     {row[1].rating}
                   </div>
                 ) : (
-                  <div className="col-md-2 text-left">{row[1].rating}</div>
+                  <div className="col-md-2 text-left card-rating-normal">{row[1].rating}</div>
                 )}
               </div>
             ))}

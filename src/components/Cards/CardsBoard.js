@@ -18,10 +18,6 @@ const CardsBoard = () => {
   const [clickableRatings, setClickableRatings] = useState(false)
 
   const deck = deckFootball();
-  let deck1 = []
-  let deck2 = []
-  let currCardPl1 = {}
-  let currCardPl2 = {}
 
   useEffect(() => {
     doRatingClickProcessing()
