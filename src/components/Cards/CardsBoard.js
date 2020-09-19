@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
 import {deckFootball} from '../../decks/football/deck_football';
-
-import joker from "../../assets/decks/football/joker.png"
-import goalie from "../../assets/decks/football/goalie.png"
-import defender from "../../assets/decks/football/defender.png"
-import midfielder from "../../assets/decks/football/midfielder.png"
-import attacker from "../../assets/decks/football/attacker.png"
+import { processClick } from '../../helpers/game_processing';
 
 const CardsBoard = () => {
   const [ratingObj, setRatingObj] = useState({})
-  const [visible1, setVisible1] = useState(false)
-  const [visible2, setVisible2] = useState(false)
+  const [visiblePl1, setVisiblePl1] = useState(false)
+  const [visiblePl2, setVisiblePl2] = useState(false)
   const [loading, setLoading] = useState(true)
   const [player1Card, setPlayer1Card] = useState({})
   const [player2Card, setPlayer2Card] = useState({})
@@ -22,89 +17,35 @@ const CardsBoard = () => {
   const [disableNextTurn, setDisableNextTurn] = useState(false)
   const [clickableRatings, setClickableRatings] = useState(false)
 
-  useEffect(() => {
-    doRatingClickProcessing()
-  }, [ratingObj])
-
   const deck = deckFootball();
   let deck1 = []
   let deck2 = []
   let currCardPl1 = {}
   let currCardPl2 = {}
 
+  useEffect(() => {
+    doRatingClickProcessing()
+  }, [ratingObj])
+
   const doRatingClickProcessing = () => {
     const { player, title, rating } = ratingObj
+    if (player) {
+      const [deck1Prop, deck2Prop, messageProp, winnerPl1Prop] = 
+        processClick(ratingObj, player1Card, player2Card, player1Deck, player2Deck);
 
-    if (player === 1) {
-      // reveal opp card
-      setVisible2(true)
-      // get the same value id
-      let searchRatingByTitle = player2Card.ratings.filter(v =>
-        v.title.includes(title)
-      )
-      if (searchRatingByTitle[0].rating < rating) {
-        //player 1 wins!
-        setMessage("Player 1 Wins!!")
-        setWinnerPlayer1(true)
-        //win the card from player 2
-        deck1 = player1Deck
-        deck2 = player2Deck
-        deck1.push(player2Card)
-        deck2.splice(0, 1)
-        setPlayer1Deck(deck1)
-        setPlayer2Deck(deck2)
-      } else {
-        //player 2 wins!
-        setMessage("Player 2 Wins!!")
-        setWinnerPlayer1(false)
-        //win the card from player 1
-        deck1 = player1Deck
-        deck2 = player2Deck
-        deck2.push(player1Card)
-        deck1.splice(0, 1)
-        setPlayer1Deck(deck1)
-        setPlayer2Deck(deck2)
-      }
+      setVisiblePl1(true);
+      setVisiblePl2(true);
+      setMessage(messageProp);
+      setPlayer1Deck(deck1Prop);
+      setPlayer2Deck(deck2Prop);
+      setWinnerPlayer1(winnerPl1Prop);
+
+      if (player1Deck.length > 0 && player2Deck.length > 0){
+        setDisableNextTurn(false)
+      } 
+      setClickableRatings(false)
+
     }
-
-    if (player === 2) {
-      // reveal opp card
-      setVisible1(true)
-      // get the same value id
-      let searchRatingByTitle = player1Card.ratings.filter(v =>
-        v.title.includes(title)
-      )
-      if (searchRatingByTitle[0].rating < rating) {
-        //player 2 wins!
-        setMessage("Player 2 Wins!!")
-        setWinnerPlayer1(false)
-        //win the card from player 1
-        deck1 = player1Deck
-        deck2 = player2Deck
-        deck2.push(player1Card)
-        deck1.splice(0, 1)
-        setPlayer1Deck(deck1)
-        setPlayer2Deck(deck2)
-      } else {
-        //player 1 wins!
-        setMessage("Player 1 Wins!!")
-        setWinnerPlayer1(true)
-        //win the card from player 2"
-        deck1 = player1Deck
-        deck2 = player2Deck
-        deck1.push(player2Card)
-        deck2.splice(0, 1)
-        setPlayer1Deck(deck1)
-        setPlayer2Deck(deck2)
-      }
-    }
-
-    if (player1Deck.length > 0 && player2Deck.length > 0){
-      setDisableNextTurn(false)
-    } 
-    
-    setClickableRatings(false)
-
   }
 
   const startGame = () => {
@@ -133,8 +74,8 @@ const CardsBoard = () => {
     if (player1Card.title !== "" && player2Card.title !== "") {
       setLoading(false)
       //unMask ratings of Player 1
-      setVisible1(true)
-      setVisible2(false)
+      setVisiblePl1(true)
+      setVisiblePl2(false)
     }
   }
 
@@ -156,8 +97,8 @@ const CardsBoard = () => {
       // set new current card for Player 2
       setPlayer2Card(player2Deck[0])
       //set the ratings invisible
-      setVisible1(true)
-      setVisible2(false)
+      // setVisiblePl1(true)
+      // setVisiblePl2(false)
     } else {
       //move the first card (active) to the back of the pack
       deck2 = player2Deck
@@ -171,8 +112,8 @@ const CardsBoard = () => {
       // set new current card for Player 1
       setPlayer1Card(player1Deck[0])
       //set the ratings invisible
-      setVisible1(false)
-      setVisible2(true)
+      // setVisiblePl1(false)
+      // setVisiblePl2(true)
     }
   }
 
@@ -181,7 +122,8 @@ const CardsBoard = () => {
       <div className="row">
         <div className="col-md-12 text-center">{message}</div>
       </div>
-      {message !== "" ? (
+      { 
+        message ? (
         <div className="row">
           <div className="col-md-6 text-center">
             <button
@@ -232,7 +174,7 @@ const CardsBoard = () => {
             <Card
               cardInfo={player1Card}
               player={1}
-              showCard={visible1}
+              showCard={visiblePl1}
               clickableRatings = {clickableRatings}
               onClick={ratingObj => setRatingObj(ratingObj)}
             />
@@ -242,7 +184,7 @@ const CardsBoard = () => {
             <Card
               cardInfo={player2Card}
               player={2}
-              showCard={visible2}
+              showCard={visiblePl2}
               clickableRatings = {clickableRatings}
               onClick={ratingObj => setRatingObj(ratingObj)}
             />
