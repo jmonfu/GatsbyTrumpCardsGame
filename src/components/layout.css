@@ -595,3 +595,11 @@ pre tt:after {
     font-size: 100%;
   }
 }
+
+.form-group.required .control-label:after { 
+  color: #d00;
+  content: "*";
+  position: absolute;
+  margin-left: 8px;
+  top:7px;
+}

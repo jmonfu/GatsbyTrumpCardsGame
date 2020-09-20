@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import Card from "./Card";
 import {deckFootball} from '../../decks/football/deck_football';
 import { processClick, distributeCards } from '../../helpers/game_processing';
+import StartGame from '../Game/startGame';
 
 const CardsBoard = () => {
-  const [ratingObj, setRatingObj] = useState({})
+
+  const [ratingObj, setRatingObj] = useState({});
+  const [startGameObj, setStartGameObj] = useState({});
   const [visiblePl1, setVisiblePl1] = useState(false)
   const [visiblePl2, setVisiblePl2] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -23,10 +26,17 @@ const CardsBoard = () => {
     doRatingClickProcessing()
   }, [ratingObj])
 
-  const startGame = () => {
+  useEffect(() => {
+    initializeGame();
+  }, [startGameObj])
+
+
+  const initializeGame = () => {
     //generate the card’s values
-    distributeCardsToPlayers()
-    setClickableRatings(true)
+    if (startGameObj.player1Name) {
+      distributeCardsToPlayers()
+      setClickableRatings(true)
+    }
   }
 
   const doRatingClickProcessing = () => {
@@ -128,25 +138,16 @@ const CardsBoard = () => {
               id="reStartGameBtn"
               name="ReStartGameButton"
               className="btn btn-secondary"
-              onClick={() => startGame()}
+              onClick={() => initializeGame()}
             >
               ReStart Game
             </button>
           </div>
         </div>
       ) : (
-        <div className="row top-buffer">
-          <div className="col-md-12 text-center">
-            <button
-              id="startGameBtn"
-              name="StartGameButton"
-              className="btn btn-secondary"
-              onClick={() => startGame()}
-            >
-              START GAME
-            </button>
-          </div>
-        </div>
+        <StartGame 
+          startGameData={startGameObj => setStartGameObj(startGameObj)}
+        />
       )}
       {loading ? (
         <div className="row">
