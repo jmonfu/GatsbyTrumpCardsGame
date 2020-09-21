@@ -1,13 +1,28 @@
 import React from "react"
 import empty from "../../assets/decks/football/empty.png"
 
-const Card = ({ cardInfo, player, onClick, showCard, clickableRatings, highestRatingPl2, computerControlled }) => {
+const Card = ({ cardInfo, player, onClick, showCard, clickableRatings, highestRatingPl2, computerControlled, winnerPl1, selectedRatingPl1 }) => {
 
-  if (computerControlled && player === 2) {
-    console.log("Player= " + player);
-    console.log("highest Rating Pl 2 title= " + highestRatingPl2.title);
-    console.log("highest Rating Pl 2 rating= " + highestRatingPl2.rating);  
+  let displayTitleHighlight = false;
+  let displayRatingHighlight = false;
+  let titleHightlightPl1 = "";
+  let titleHightlightPl2 = "";
+  let ratingHightlightPl2 = "";
+
+  // if winner 1 and selectedRatingPl1 or   //computerControlled && !winnerPl1
+  if ((winnerPl1 && selectedRatingPl1) || (computerControlled && !winnerPl1)) {
+    if (winnerPl1) {
+      //we want to highlight both titles and ratings
+      titleHightlightPl1 = selectedRatingPl1.title;
+    } else {
+      //we only want to hightlight the title and matching rating
+      titleHightlightPl2 = highestRatingPl2.title;
+      ratingHightlightPl2 = highestRatingPl2.rating;    
+    }
+    displayTitleHighlight = true;
+    displayRatingHighlight = true;
   }
+
 
   const evenRatingRows = cardInfo.ratings.reduce(function (rows, key, index) {
     return (
@@ -38,10 +53,13 @@ const Card = ({ cardInfo, player, onClick, showCard, clickableRatings, highestRa
             {evenRatingRows.map(row => (
               <div className="row card-body-row-style" key={row[0].title}>
                 {
-                  computerControlled && highestRatingPl2.title === row[0].title ?
-                    <div className="col-md-4 text-left card-rating-computer-selected">{row[0].title}</div>
+                  (
+                    (displayTitleHighlight && ((titleHightlightPl1 === row[0].title) 
+                      || (titleHightlightPl2 === row[0].title) )) ?
+                    (<div className="col-md-4 text-left card-rating-computer-selected">{row[0].title}</div>)
                     :
-                    <div className="col-md-4 text-left">{row[0].title}</div>
+                    (<div className="col-md-4 text-left">{row[0].title}</div>)
+                  )
                 }
                 
                 {clickableRatings ? (
@@ -59,7 +77,10 @@ const Card = ({ cardInfo, player, onClick, showCard, clickableRatings, highestRa
                   </div>
                 ) : 
                 (
-                  (computerControlled && highestRatingPl2.rating === row[0].rating)
+                  // here we are saying either the rating of player 2 = rowRating, or else
+                  // the title of player 1 = the row title (in case Player 1 is the winner)
+                  (displayRatingHighlight && ((ratingHightlightPl2 === row[0].rating 
+                      || (titleHightlightPl1 === row[0].title))))
                   ?
                   (<div className="col-md-2 text-center card-rating-computer-selected-rating">{row[0].rating}</div>)
                   :
@@ -67,7 +88,8 @@ const Card = ({ cardInfo, player, onClick, showCard, clickableRatings, highestRa
                 )
               }
                 {
-                  computerControlled && highestRatingPl2.title === row[1].title ?
+                  displayTitleHighlight && ( (titleHightlightPl1 === row[1].title) 
+                    || (titleHightlightPl2 === row[1].title) ) ?
                     <div className="col-md-4 text-left card-rating-computer-selected">{row[1].title}</div>
                     :
                     <div className="col-md-4 text-left">{row[1].title}</div>
@@ -88,7 +110,10 @@ const Card = ({ cardInfo, player, onClick, showCard, clickableRatings, highestRa
                   </div>
                 ) : 
                 (
-                  (computerControlled && highestRatingPl2.rating === row[1].rating)
+                  // here we are saying either the rating of player 2 = rowRating, or else
+                  // the title of player 1 = the row title (in case Player 1 is the winner)
+                  (displayTitleHighlight && ((ratingHightlightPl2 === row[1].rating) 
+                    || (titleHightlightPl1 === row[1].title)))
                   ?
                   (<div className="col-md-2 text-center card-rating-computer-selected-rating">{row[1].rating}</div>)
                   :

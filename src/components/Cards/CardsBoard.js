@@ -11,6 +11,7 @@ const CardsBoard = () => {
   const [nextTurnObj, setNextTurnObj] = useState({});
   const [computerControlled, setComputerControlled] = useState(false);
   const [highestRatingPl2, setHighestRatingPl2] = useState({});
+  const [selectedRatingPl1, setSelectedRatingPl1] = useState({});
   const [visiblePl1, setVisiblePl1] = useState(false);
   const [visiblePl2, setVisiblePl2] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -92,6 +93,7 @@ const CardsBoard = () => {
         player2Deck
       )
 
+      setSelectedRatingPl1({title: title, rating: rating});
       setVisiblePl1(true)
       setVisiblePl2(true)
       setMessage(messageProp)
@@ -211,6 +213,8 @@ const CardsBoard = () => {
               clickableRatings={clickableRatingsPl2}
               highestRatingPl2={highestRatingPl2}
               computerControlled={computerControlled}
+              winnerPl1={winnerPl1}
+              selectedRatingPl1={selectedRatingPl1}
               onClick={ratingObj => setRatingObj(ratingObj)}
             />
           </div>
