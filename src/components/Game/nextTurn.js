@@ -12,8 +12,8 @@ const NextTurn = ({ disableNextTurn, doNextTurn }) => {
             className="btn btn-secondary"
             onClick={() =>
                 doNextTurn({
-                  nextTurn: true,
-                  reStart: false
+                  nextTurnProp: true,
+                  reStartProp: false
                 })
               }          
             disabled={disableNextTurn}
@@ -28,8 +28,8 @@ const NextTurn = ({ disableNextTurn, doNextTurn }) => {
             className="btn btn-secondary"
             onClick={() =>
                 doNextTurn({
-                  nextTurn: false,
-                  reStart: true
+                  nextTurnProp: false,
+                  reStartProp: true
                 })
               }          
           >
